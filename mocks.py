@@ -79,5 +79,5 @@ noise_ethernet_packet = {
     'dest_mac_bytes': b'\xff\xff\xff\xff\xff\xff',
     'source_mac': b'20:C9:D0:43:CE:D7',
     'source_mac_bytes': b' \xc9\xd0C\xce\xd7',
-    'type_or_length': b'\x08\x06',
+    'type_or_length': b'\x00\x06',
 }
