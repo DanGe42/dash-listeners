@@ -27,6 +27,11 @@ class EthernetHeader(_EthernetHeader):
         data = packet[14:]
         return (header_tuple, data)
 
+    def pack(self):
+        return struct.pack(
+            "!6s6s2s",
+            self.dest_mac_bytes, self.source_mac_bytes, self.type_or_length)
+
     @property
     def dest_mac(self):
         return normalize_mac(super(EthernetHeader, self).dest_mac_bytes)
@@ -63,6 +68,20 @@ class ArpPacket(_ArpPacket):
     def unpack(cls, data):
         arp_header = data[0:28]
         return cls._make(struct.unpack("2s2s1s1s2s6s4s6s4s", arp_header))
+
+    def pack(self):
+        return struct.pack(
+            "2s2s1s1s2s6s4s6s4s",
+            self.htype,
+            self.ptype,
+            self.hlen,
+            self.plen,
+            self.oper,
+            self.sender_haddr_bytes,
+            self.sender_paddr_bytes,
+            self.target_haddr_bytes,
+            self.target_paddr_bytes,
+        )
 
     @property
     def sender_haddr(self):
