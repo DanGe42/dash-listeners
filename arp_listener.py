@@ -48,6 +48,10 @@ class ArpListener(object):
                 arp_packet = ArpPacket.unpack(ether_data)
                 for consumer in self.consumers:
                     consumer(ether_header, arp_packet)
+                    # TODO(2015-09-21): I don't know why, but when I run with
+                    # --mock, stdout never gets flushed properly. Investigate
+                    # this and remove this eventually.
+                    sys.stdout.flush()
 
         except KeyboardInterrupt:
             print('Ctrl-C', file=sys.stderr)
