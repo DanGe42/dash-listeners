@@ -7,7 +7,7 @@ import struct
 def normalize_mac(mac_bytes):
     addr = binascii.hexlify(mac_bytes)
     addr = addr.upper()
-    return ':'.join(re.findall(r'..', addr))
+    return ':'.join(re.findall(r'..', addr.decode('utf-8')))
 
 
 _EthernetHeader = namedtuple(
@@ -47,7 +47,7 @@ class EthernetHeader(_EthernetHeader):
         return orig
 
 
-ARP_TYPE = '\x08\x06'  # 2054 in decimal (max ethernet data length (1500))
+ARP_TYPE = b'\x08\x06'  # 2054 in decimal (max ethernet data length (1500))
 _ArpPacket = namedtuple(
     '_ArpPacket',
     [
