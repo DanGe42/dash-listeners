@@ -17,8 +17,7 @@ def listen_on_stdin(bridge):
     try:
         while True:
             data = input()
-            print(data)
-            if data.startswith(b'Hello Dash button'):
+            if data.startswith('Hello Dash button'):
                 bridge.toggle()
     except KeyboardInterrupt:
         print('Ctrl-C', file=sys.stderr)
