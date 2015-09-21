@@ -36,7 +36,7 @@ class ArpListener(object):
 
     def listen(self):
         try:
-            print("Listening for ARP packets")
+            print("Listening for ARP packets", file=sys.stderr)
             while True:
                 # for reference, the second return value is the source address
                 packet, _ = self.socket.recvfrom(2048)
@@ -50,12 +50,12 @@ class ArpListener(object):
                     consumer(ether_header, arp_packet)
 
         except KeyboardInterrupt:
-            print('Ctrl-C')
+            print('Ctrl-C', file=sys.stderr)
         except IOError:
-            print('Quitting because of fatal IO error')
+            print('Quitting because of fatal IO error', file=sys.stderr)
             raise
         except:
-            print('Unexpected error: {}'.format(sys.exc_info()[0]))
+            print('Unexpected error: {}'.format(sys.exc_info()[0]), file=sys.stderr)
             raise
         finally:
             self.socket.close()
@@ -80,7 +80,7 @@ class DashButtonPrinter(object):
         source_mac = arp_packet.sender_haddr
         sender_paddr = arp_packet.sender_paddr
         if source_mac == self.mac_addr and sender_paddr == '0.0.0.0':
-            print("Hello Dash button ({})!".format(source_mac))
+            print("Hello Dash button: {}".format(source_mac))
 
 
 def _dict_to_nt(d, nt_class):
@@ -92,6 +92,7 @@ def _dict_to_nt(d, nt_class):
 # negligible if something were to go wrong.
 if __name__ == '__main__':
     if len(sys.argv) > 1 and sys.argv[1] == '--mock':
+        print("Using mocks", file=sys.stderr)
         import mocks
         arp1 = \
             _dict_to_nt(mocks.arp_packet_probe[0], EthernetHeader).pack() + \
