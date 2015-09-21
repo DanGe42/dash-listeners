@@ -111,7 +111,8 @@ if __name__ == '__main__':
     else:
         arp_listener = ArpListener.create()
 
-    arp_listener.add_consumer(ether_printer)
-    arp_listener.add_consumer(arp_printer)
+    # Uncomment these for debugging
+    # arp_listener.add_consumer(ether_printer)
+    # arp_listener.add_consumer(arp_printer)
     arp_listener.add_consumer(DashButtonPrinter('74:C2:46:CB:72:5D'))
     arp_listener.listen()
