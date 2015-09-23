@@ -3,13 +3,20 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
-
 import phue
+import traceback
 import sys
 
 
 if sys.version_info < (3, 0):
     input = raw_input
+
+
+def on_dash(bridge, data):
+    try:
+        bridge.toggle()
+    except OSError as e:
+        print(traceback.format_exc(), file=sys.stderr)
 
 
 def listen_on_stdin(bridge):
@@ -18,11 +25,12 @@ def listen_on_stdin(bridge):
         while True:
             data = input()
             if data.startswith('Hello Dash button'):
-                bridge.toggle()
+                on_dash(bridge, data)
     except KeyboardInterrupt:
         print('Ctrl-C', file=sys.stderr)
     except:
-        print('Unexpected error: {}'.format(sys.exc_info()[0]), file=sys.stderr)
+        print('Unexpected error!', file=sys.stderr)
+        print(traceback.format_exc(), file=sys.stderr)
         raise
 
 
@@ -39,10 +47,7 @@ class BridgeWrapper(object):
             light.on = on
 
     def toggle(self):
-        if self.lights_are_on():
-            self.set_lights(False)
-        else:
-            self.set_lights(True)
+        self.set_lights(not self.lights_are_on())
 
 
 if __name__ == '__main__':
