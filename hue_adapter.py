@@ -41,15 +41,20 @@ class BridgeWrapper(object):
         self.bridge = bridge
 
     def lights_are_on(self):
-        return any(map(lambda light: light.on, self.bridge.lights))
+        if HUE_ROOM is not None:
+            room_lights = self.bridge.get_group(HUE_ROOM, 'lights')
+        for light in self.bridge.lights:
+            if HUE_ROOM is None or str(light.light_id) in room_lights:
+                if light.on:
+                    return True
+        return False
 
     def set_lights(self, on):
         print("Turning lights {}".format("on" if on else "off"))
         if HUE_ROOM is not None:
             room_lights = self.bridge.get_group(HUE_ROOM, 'lights')
-        lights = self.bridge.lights
-        for light in lights:
-            if HUE_ROOM is None or light.light_id in room_lights:
+        for light in self.bridge.lights:
+            if HUE_ROOM is None or str(light.light_id) in room_lights:
                 light.on = on
 
     def toggle(self):
