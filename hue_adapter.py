@@ -9,7 +9,7 @@ import sys
 
 
 if sys.version_info < (3, 0):
-    input = raw_input
+    input = raw_input # pylint: disable=E0602
 
 
 def on_dash(bridge, data):
@@ -43,6 +43,7 @@ class BridgeWrapper(object):
 
     def set_lights(self, on):
         print("Turning lights {}".format("on" if on else "off"))
+        print(self.bridge.lights)
         for light in self.bridge.lights:
             light.on = on
 

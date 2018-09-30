@@ -13,6 +13,8 @@ from packets import ARP_TYPE
 from packets import ArpPacket
 from packets import EthernetHeader
 
+BUTTON_1_MAC = 'A0:02:DC:CD:88:FA'
+
 
 def _check_not_none(obj):
     if obj is None:
@@ -24,7 +26,7 @@ class ArpListener(object):
     @classmethod
     def create(cls):
         raw_socket = socket.socket(
-            socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0003))
+            socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0003)) # pylint: disable=E1101
         return cls(raw_socket)
 
     def __init__(self, socket):
@@ -83,7 +85,7 @@ class DashButtonPrinter(object):
     def __call__(self, _, arp_packet):
         source_mac = arp_packet.sender_haddr
         sender_paddr = arp_packet.sender_paddr
-        if source_mac == self.mac_addr and sender_paddr == '0.0.0.0':
+        if source_mac == self.mac_addr:
             print("Hello Dash button: {}".format(source_mac))
 
 
@@ -114,5 +116,5 @@ if __name__ == '__main__':
     # Uncomment these for debugging
     # arp_listener.add_consumer(ether_printer)
     # arp_listener.add_consumer(arp_printer)
-    arp_listener.add_consumer(DashButtonPrinter('74:C2:46:CB:72:5D'))
+    arp_listener.add_consumer(DashButtonPrinter(BUTTON_1_MAC))
     arp_listener.listen()

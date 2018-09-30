@@ -20,7 +20,7 @@ $ pip install -r requirements.txt
 For use with the Philips Hue adapter:
 
 ```
-$ (sudo ./arp_listener.py) | ./hue_adapter.py <Hue bridge username>
+$ (sudo ./arp_listener.py) | ./hue_adapter.py <Hue bridge IP> <Hue bridge username>
 ```
 
 Currently, this script only runs on Linux (not BSD/OS X) systems, as these are
