@@ -46,11 +46,11 @@ class BridgeWrapper(object):
     def set_lights(self, on):
         print("Turning lights {}".format("on" if on else "off"))
         if HUE_ROOM is not None:
-            lights = self.bridge.get_group(HUE_ROOM, 'lights')
-        else:
-            lights = self.bridge.lights
+            room_lights = self.bridge.get_group(HUE_ROOM, 'lights')
+        lights = self.bridge.lights
         for light in lights:
-            light.on = on
+            if HUE_ROOM is None or light.light_id in room_lights:
+                light.on = on
 
     def toggle(self):
         self.set_lights(not self.lights_are_on())
