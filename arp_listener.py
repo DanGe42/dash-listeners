@@ -13,6 +13,8 @@ from packets import ARP_TYPE
 from packets import ArpPacket
 from packets import EthernetHeader
 
+from constants import DASH_BUTTONS
+
 
 def _check_not_none(obj):
     if obj is None:
