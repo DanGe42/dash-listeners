@@ -13,8 +13,6 @@ from packets import ARP_TYPE
 from packets import ArpPacket
 from packets import EthernetHeader
 
-BUTTON_1_MAC = 'A0:02:DC:CD:88:FA'
-
 
 def _check_not_none(obj):
     if obj is None:
@@ -116,5 +114,6 @@ if __name__ == '__main__':
     # Uncomment these for debugging
     # arp_listener.add_consumer(ether_printer)
     # arp_listener.add_consumer(arp_printer)
-    arp_listener.add_consumer(DashButtonPrinter(BUTTON_1_MAC))
+    for button in DASH_BUTTONS:
+        arp_listener.add_consumer(DashButtonPrinter(button))
     arp_listener.listen()
