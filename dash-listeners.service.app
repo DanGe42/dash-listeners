@@ -8,7 +8,7 @@ Group=root
 Restart=always
 KillSignal=SIGQUIT
 WorkingDirectory=/home/sdlynx/repos/dash-listeners/
-ExecStart=/usr/bin/python3 ./arp_listener.py | /usr/bin/python3 ./hue_adapter.py
+ExecStart=/usr/bin/sh ./service.sh
 
 [Install]
 WantedBy=multi-user.target
