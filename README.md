@@ -9,27 +9,6 @@ one that turns Philips Hue lights on or off.
 The idea and techniques behind the implementation for this came from this
 [blog post](https://medium.com/@edwardbenson/how-i-hacked-amazon-s-5-wifi-button-to-track-baby-data-794214b0bdd8).
 
-## Quick Usage
-
-First, install dependencies:
-
-```
-$ pip install -r requirements.txt
-```
-
-For use with the Philips Hue adapter:
-
-```
-$ (sudo ./arp_listener.py) | ./hue_adapter.py <Hue bridge IP> <Hue bridge username>
-```
-
-Currently, this script only runs on Linux (not BSD/OS X) systems, as these are
-the only systems whose socket APIs support `AF_PACKET`. Note that the first
-script, `arp_listener.py`, requires root privileges because it opens a raw
-socket. Since root access is generally scary, the only things the script does
-are listening for packets and publishing any ARP packets that contain a
-particular MAC address.
-
 ## Philips Hue Adapter Setup
 
 In order to use the phue package, you need to configure it. One way to do that is:
@@ -54,6 +33,27 @@ many button MACs as you'd like to the array. I'd recommend using the amazon-dash
 python library to determine your dash buttons' MAC addresses.
 
 You can remove the `HUE_ROOM` constant if you'd like the service to control all lights.
+
+## Quick Usage
+
+First, install dependencies:
+
+```
+$ pip install -r requirements.txt
+```
+
+For use with the Philips Hue adapter:
+
+```
+$ (sudo ./arp_listener.py) | ./hue_adapter.py
+```
+
+Currently, this script only runs on Linux (not BSD/OS X) systems, as these are
+the only systems whose socket APIs support `AF_PACKET`. Note that the first
+script, `arp_listener.py`, requires root privileges because it opens a raw
+socket. Since root access is generally scary, the only things the script does
+are listening for packets and publishing any ARP packets that contain a
+particular MAC address.
 
 ## systemd Service Setup
 
