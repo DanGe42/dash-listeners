@@ -9,7 +9,7 @@ one that turns Philips Hue lights on or off.
 The idea and techniques behind the implementation for this came from this
 [blog post](https://medium.com/@edwardbenson/how-i-hacked-amazon-s-5-wifi-button-to-track-baby-data-794214b0bdd8).
 
-## Usage
+## Quick Usage
 
 First, install dependencies:
 
@@ -29,6 +29,41 @@ script, `arp_listener.py`, requires root privileges because it opens a raw
 socket. Since root access is generally scary, the only things the script does
 are listening for packets and publishing any ARP packets that contain a
 particular MAC address.
+
+## Philips Hue Adapter Setup
+
+In order to use the phue package, you need to configure it. One way to do that is:
+
+1. Press your hue bridge's button
+2. Within 30 seconds, execute the following in the python3 shell
+```python
+from phue import Bridge
+b = Bridge('<your hue bridge IP here>')
+b.get_api()
+exit()
+```
+
+The commands will create a `.python_hue` file which has your authentication details.
+If you plan to run the scripts as root, copy `~/.python_hue` to the root directory.
+On the Raspberry Pi running Raspbian, this is apparently `/root/`.
+
+## Constants
+
+Edit the contents of `constants.py` to match your constants. You can add as
+many button MACs as you'd like to the array. I'd recommend using the amazon-dash
+python library to determine your dash buttons' MAC addresses.
+
+You can remove the `HUE_ROOM` constant if you'd like the service to control all lights.
+
+## systemd Service Setup
+
+Edit the `dash-listeners.service.app` file to have the proper `WorkingDirectory`,
+which should be the folder that you cloned this repository into. Then run
+```bash
+sudo make install
+```
+
+That's it. You can control the service using `systemctl` now.
 
 ## How this works
 
