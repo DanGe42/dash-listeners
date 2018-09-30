@@ -7,7 +7,7 @@ import phue
 import traceback
 import sys
 
-from constants import HUE_ROOM, HUE_BRIDGE_IP, HUE_BRIDGE_USERNAME
+from constants import HUE_ROOM, HUE_BRIDGE_IP
 
 
 if sys.version_info < (3, 0):
