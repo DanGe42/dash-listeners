@@ -1,6 +1,6 @@
 # Dash Listener
 
-A simple Python script that listens for an Amazon Dash button connecting to the
+A simple Python 3 script that listens for an Amazon Dash button connecting to the
 network and prints to stdout. Output can be piped into another program, such as
 one that turns Philips Hue lights on or off.
 
