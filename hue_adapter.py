@@ -7,9 +7,11 @@ import phue
 import traceback
 import sys
 
+from constants import HUE_ROOM, HUE_BRIDGE_IP
+
 
 if sys.version_info < (3, 0):
-    input = raw_input
+    input = raw_input # pylint: disable=E0602
 
 
 def on_dash(bridge, data):
@@ -39,24 +41,28 @@ class BridgeWrapper(object):
         self.bridge = bridge
 
     def lights_are_on(self):
-        return any(map(lambda light: light.on, self.bridge.lights))
+        if HUE_ROOM is not None:
+            room_lights = self.bridge.get_group(HUE_ROOM, 'lights')
+        for light in self.bridge.lights:
+            if HUE_ROOM is None or str(light.light_id) in room_lights:
+                if light.on:
+                    return True
+        return False
 
     def set_lights(self, on):
         print("Turning lights {}".format("on" if on else "off"))
+        if HUE_ROOM is not None:
+            room_lights = self.bridge.get_group(HUE_ROOM, 'lights')
         for light in self.bridge.lights:
-            light.on = on
+            if HUE_ROOM is None or str(light.light_id) in room_lights:
+                light.on = on
 
     def toggle(self):
         self.set_lights(not self.lights_are_on())
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        print("Usage: {} <bridge IP> <username>".format(sys.argv[0]),
-              file=sys.stderr)
-        sys.exit(1)
-
-    bridge = phue.Bridge(sys.argv[1], username=sys.argv[2])
+    bridge = phue.Bridge(HUE_BRIDGE_IP)
     bridge.connect()
     bridge = BridgeWrapper(bridge)
     listen_on_stdin(bridge)
